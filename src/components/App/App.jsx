@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Description from "../Description/Description";
 import Options from "../Options/Options";
@@ -25,12 +25,10 @@ function App() {
   const positiveFeedback = Math.round((state.good / totalFeedback) * 100);
 
   const updateFeedback = (key) => {
-    const newState = {
+    setState({
       ...state,
       [key]: state[key] + 1,
-    };
-    setState(newState);
-    localStorage.setItem("feedback", JSON.stringify(newState));
+    });
   };
 
   const resetFeedback = () => {
@@ -40,6 +38,10 @@ function App() {
       bad: 0,
     });
   };
+
+  useEffect(() => {
+    localStorage.setItem("feedback", JSON.stringify(state));
+  }, [state]);
 
   return (
     <div className={css.container}>
